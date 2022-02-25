@@ -60,3 +60,9 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Docs: https://hexdocs.pm/phoenix
   * Forum: https://elixirforum.com/c/phoenix-forum
   * Source: https://github.com/phoenixframework/phoenix
+
+## License
+
+This project is licensed under the [BSD + Patent license](https://opensource.org/licenses/BSDplusPatent).
+
+Any submissions to this project (e.g. as Pull Requests) must be made available under these terms.
