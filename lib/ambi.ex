@@ -17,7 +17,6 @@ defmodule Ambi do
     result = %Ambi.Reading{}
     |> Ambi.Reading.changeset(attrs)
     |> Repo.insert()
-    |> IO.inspect(label: "Repo.insert")
     #broadcast_change(:added)
     #Logger.debug "Added new reading and called broadcast_change()"
     Logger.debug "Added new reading to the DB"
