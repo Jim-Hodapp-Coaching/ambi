@@ -2,16 +2,14 @@ defmodule AmbiWeb.ApiController do
   use AmbiWeb, :controller
 
   def add_reading(conn, params) do
-    IO.inspect(params, label: "params")
     status = case Ambi.add_reading(params) do
       {:ok, _} -> %{code: :ok, desc: "Reading inserted successfully into DB"}
       {:error, _} -> %{code: :bad_request, desc: "Error inserting params into DB"}
     end
-    IO.inspect(conn, label: "before")
-    rendered = conn
+
+    conn
     |> put_status(status.code)
     |> render("api_response.json", status: status)
-    |>  IO.inspect(label: "rendered")
   end
 
   def set_metadata(conn, params) do
