@@ -17,29 +17,34 @@ defmodule Ambi do
     %Ambi.Reading{}
     |> Ambi.Reading.changeset(attrs)
     |> Repo.insert()
-    #broadcast_change(:added)
-    #Logger.debug "Added new reading and called broadcast_change()"
-    Logger.debug "Added new reading to the DB"
+
+    # broadcast_change(:added)
+    # Logger.debug "Added new reading and called broadcast_change()"
+    Logger.debug("Added new reading to the DB")
   end
 
   # This method looks for a single row in the reading_metadata table and
   # updates it with the values past in from the sensor client
   def set_reading_metadata(attrs \\ %{}) do
-    Logger.debug "reading_metadata: #{inspect(attrs)}"
-    id = 1;
+    Logger.debug("reading_metadata: #{inspect(attrs)}")
+    id = 1
+
     result =
       case Repo.get(Ambi.ReadingMetadata, id) do
-        nil  -> %Ambi.ReadingMetadata{id: id} # ReadingMetadata instance not found, we build one
-        reading_metadata -> reading_metadata  # ReadingMetadata instance exists, let's use it
+        # ReadingMetadata instance not found, we build one
+        nil -> %Ambi.ReadingMetadata{id: id}
+        # ReadingMetadata instance exists, let's use it
+        reading_metadata -> reading_metadata
       end
       |> Ambi.ReadingMetadata.changeset(attrs)
-      |> Repo.insert_or_update
-    Logger.debug "result: #{inspect(result)}"
+      |> Repo.insert_or_update()
 
-    #case result do
+    Logger.debug("result: #{inspect(result)}")
+
+    # case result do
     #  {:ok, _struct}       -> Logger.debug "** Set reading metadata successfully"
     #  {:error, _changeset} -> Logger.error "** Failed to update the ReadingMetadata table"
-    #end
+    # end
   end
 
   def get_reading_metadata() do
@@ -57,7 +62,8 @@ defmodule Ambi do
   end
 
   def get_reading() do
-    %{temperature: get_temp(),
+    %{
+      temperature: get_temp(),
       humidity: get_humidity(),
       pressure: get_pressure(),
       dust_concentration: get_dust_concentration(),
@@ -85,6 +91,7 @@ defmodule Ambi do
       from Ambi.Reading,
         order_by: [desc: :humidity],
         limit: 2
+
     Repo.aggregate(query, :avg, :humidity)
     get_last_row().humidity
   end
@@ -108,7 +115,7 @@ defmodule Ambi do
 
   # Gets the average temperature from the DB over the last 24 hour period
   def get_average_temp_24hrs() do
-    one_day_ago = Timex.shift(Timex.now, hours: -24, minutes: 0)
+    one_day_ago = Timex.shift(Timex.now(), hours: -24, minutes: 0)
 
     query =
       from r in Ambi.Reading,
@@ -127,27 +134,28 @@ defmodule Ambi do
   end
 
   def get_temperatures_over_120s() do
-    two_mins_ago = Timex.shift(Timex.now, hours: 0, minutes: -4)
+    two_mins_ago = Timex.shift(Timex.now(), hours: 0, minutes: -4)
 
     query =
       from r in Ambi.Reading,
-      order_by: [desc: :inserted_at],
-      where: r.inserted_at >= ^two_mins_ago,
-      select: {r.temperature},
-      limit: 25 # temporary
+        order_by: [desc: :inserted_at],
+        where: r.inserted_at >= ^two_mins_ago,
+        select: {r.temperature},
+        # temporary
+        limit: 25
 
     Repo.all(query)
   end
 
   def get_avg_temperature_over_1hr(hour) do
-    n_hours_ago = Timex.shift(Timex.now, hours: hour, minutes: 0)
-    nm_hours_ago = Timex.shift(Timex.now, hours: hour+1, minutes: 0)
+    n_hours_ago = Timex.shift(Timex.now(), hours: hour, minutes: 0)
+    nm_hours_ago = Timex.shift(Timex.now(), hours: hour + 1, minutes: 0)
 
     query =
       from r in Ambi.Reading,
-      order_by: [desc: :inserted_at],
-      where: r.inserted_at >= ^n_hours_ago and r.inserted_at < ^nm_hours_ago,
-      select: {r.temperature}
+        order_by: [desc: :inserted_at],
+        where: r.inserted_at >= ^n_hours_ago and r.inserted_at < ^nm_hours_ago,
+        select: {r.temperature}
 
     Repo.aggregate(query, :avg, :temperature)
   end
@@ -164,9 +172,10 @@ defmodule Ambi do
     Repo.aggregate(Ambi.Reading, :avg, :humidity)
   end
 
- # Gets the average humidity from the DB over the last 24 hour period
+  # Gets the average humidity from the DB over the last 24 hour period
   def get_average_humidity_24hrs() do
-    one_day_ago = Timex.shift(Timex.now, hours: -24, minutes: 0)
+    one_day_ago = Timex.shift(Timex.now(), hours: -24, minutes: 0)
+
     query =
       from r in Ambi.Reading,
         order_by: [desc: :inserted_at],
@@ -184,26 +193,26 @@ defmodule Ambi do
   end
 
   def get_humidities_over_24hrs() do
-    twenty_four_hours_ago = Timex.shift(Timex.now, hours: -24, minutes: 0)
+    twenty_four_hours_ago = Timex.shift(Timex.now(), hours: -24, minutes: 0)
 
     query =
       from r in Ambi.Reading,
-      order_by: [desc: :inserted_at],
-      where: r.inserted_at >= ^twenty_four_hours_ago,
-      select: {r.humidity}
+        order_by: [desc: :inserted_at],
+        where: r.inserted_at >= ^twenty_four_hours_ago,
+        select: {r.humidity}
 
     Repo.all(query)
   end
 
   def get_avg_humidity_over_1hr(hour) do
-    n_hours_ago = Timex.shift(Timex.now, hours: hour, minutes: 0)
-    nm_hours_ago = Timex.shift(Timex.now, hours: hour+1, minutes: 0)
+    n_hours_ago = Timex.shift(Timex.now(), hours: hour, minutes: 0)
+    nm_hours_ago = Timex.shift(Timex.now(), hours: hour + 1, minutes: 0)
 
     query =
       from r in Ambi.Reading,
-      order_by: [desc: :inserted_at],
-      where: r.inserted_at >= ^n_hours_ago and r.inserted_at < ^nm_hours_ago,
-      select: {r.humidity}
+        order_by: [desc: :inserted_at],
+        where: r.inserted_at >= ^n_hours_ago and r.inserted_at < ^nm_hours_ago,
+        select: {r.humidity}
 
     Repo.aggregate(query, :avg, :humidity)
   end
@@ -239,20 +248,23 @@ defmodule Ambi do
   @topic inspect(__MODULE__)
   def subscribe() do
     PubSub.subscribe(Ambi.PubSub, @topic)
-    Logger.debug """
+
+    Logger.debug("""
     Subscribe details:
     topic: #{inspect(@topic)}
-    """
+    """)
   end
 
   def broadcast_change(event) do
     PubSub.broadcast(Ambi.PubSub, @topic, event)
-    Logger.debug """
+
+    Logger.debug("""
     Broadcast details:
     topic: #{inspect(@topic)}
     module: #{inspect(__MODULE__)}
     event: #{inspect(event)}
-    """
+    """)
+
     :ok
   end
 end

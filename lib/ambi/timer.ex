@@ -5,12 +5,14 @@ defmodule Ambi.Timer do
   def start_link(state) do
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
   end
+
   ## SERVER ##
 
   def init(_state) do
-    Logger.warn "Ambi timer server started"
+    Logger.warn("Ambi timer server started")
     broadcast()
-    schedule_timer(10_000) # 1 sec timer
+    # 1 sec timer
+    schedule_timer(10_000)
     {:ok, 0}
   end
 
