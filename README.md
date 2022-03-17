@@ -40,6 +40,35 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+## Running as a systemd service on Linux (Ubuntu)
+
+To automatically run your Ambi backend as a service that starts up when your Linux system boots, create the file `/etc/systemd/system/ambi.service`:
+
+```
+[Unit]
+Description=Ambi Backend
+After=display-manager.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=5
+User=jhodapp
+WorkingDirectory=/home/<user>/Projects/ambi
+ExecStart=/usr/bin/mix phx.server
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Note: replace `<user>` with your username that you've cloned the Ambi repo as
+
+Next, enable your new service to start on bootup: `sudo systemctl enable ambi`
+Finally, start your new service: `sudo systemctl start ambi`
+
+Note: if it does not start for you, check to make sure you have a valid service to start after (i.e. `After=display-manager.service`. Check in `/etc/systemd/system/` for available services that your system has.
+
 ## Running in a Docker container
 
 To run ambi in a Docker container along with another one for Postgresql 11:
