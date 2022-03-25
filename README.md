@@ -9,6 +9,15 @@ What Ambi's web-based UI looks like as of December, 2021
 
 <img width="1568" alt="Screen Shot 2021-07-06 at 10 00 20 PM" src="https://user-images.githubusercontent.com/3219120/124693833-b2764e80-dea5-11eb-8e3c-36dfb6ed2d48.png">
 
+## Set Up Git Hooks
+
+The Ambi repository makes use of several Git hooks to ensure that code quality standards are met and consistent. To automatically configure these hooks for your local workspace, you can run the following:
+```bash
+./scripts/create-git-hooks
+```
+
+This will create symlinks to the Git hooks, preserving any hooks that you may have already configured.
+
 ## Install Postgresql
 
 For macOS the [Postgreql.app](https://postgresapp.com/) is the easiest and best option for your local development machine. Version 12

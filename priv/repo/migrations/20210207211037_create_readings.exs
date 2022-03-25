@@ -11,6 +11,5 @@ defmodule Ambi.Repo.Migrations.CreateReadings do
 
       timestamps()
     end
-
   end
 end
