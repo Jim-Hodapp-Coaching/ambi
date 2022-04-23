@@ -1,10 +1,10 @@
-use Mix.Config
+import Config
 
 database_url = System.get_env("DATABASE_URL")
 
 # Configure your database
 config :ambi, Ambi.Repo,
- # url: database_url,
+  # url: database_url,
   username: "postgres",
   password: "postgres",
   database: "ambi_dev",
