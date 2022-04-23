@@ -23,19 +23,43 @@ This will create symlinks to the Git hooks, preserving any hooks that you may ha
 For macOS the [Postgreql.app](https://postgresapp.com/) is the easiest and best option for your local development machine. Version 12
 is the most tested version of the DB at the time of writing.
 
-For Linux, use the system package manager to install Postgresql@12
+For Linux, use the system package manager to install Postgresql@14
 
-Keep the local db instance running on port 5432 and make sure to set up a postgres user/password.
+Keep the local db instance running on port 5432 and make sure to set up a postgres user/password:
+
+`$ sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"`
+
+To allow Ambi to access your Postgresql cluster via localhost, make sure your `/etc/postgresql/14/main/pg_hba.conf` looks like the following:
+
+```
+# Database administrative login by Unix domain socket
+local   all             postgres                                peer
+
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     peer
+host    all             postgres        localhost               trust
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            scram-sha-256
+# IPv6 local connections:
+host    all             all             ::1/128                 scram-sha-256
+# Allow replication connections from localhost, by a user with the
+# replication privilege.
+local   replication     all                                     peer
+host    replication     all             127.0.0.1/32            scram-sha-256
+host    replication     all             ::1/128                 scram-sha-256
+```
 
 ## Install Node
 
 Make sure to install [Node.js](https://nodejs.org/en/download/package-manager/), version 14 is the most tested version at the time of writing.
 If you have multiple versions of Node installed, make sure that version 14 is run when running `node -v` from a command line.
 
-E.g.:
+For example, at the time of writing, for Ubuntu 22.04:
 ```
 $ node -v
-v14.18.2
+v14.19.1
 ```
 
 ## Starting the Ambi backend (Elixir)
