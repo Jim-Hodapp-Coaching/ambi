@@ -5,9 +5,9 @@ like temperature, humidity, pressure, air quality, dust concentration, etc. It u
 for some attractive base UI components and Phoenix LiveView to push updates to the client with no page
 refresh needed.
 
-What Ambi's web-based UI looks like as of December, 2021
+What Ambi's web-based UI looks like as of April, 2022
 
-<img width="1568" alt="Screen Shot 2021-07-06 at 10 00 20 PM" src="https://user-images.githubusercontent.com/3219120/124693833-b2764e80-dea5-11eb-8e3c-36dfb6ed2d48.png">
+<img width="1482" alt="Screen Shot 2022-04-23 at 19 23 51" src="https://user-images.githubusercontent.com/3219120/164950502-6e58e0ed-5f58-4018-ae67-908960bb94a3.png">
 
 ## Set Up Git Hooks
 
