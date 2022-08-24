@@ -21,6 +21,7 @@ defmodule AmbiWeb.ApiController do
 
   def reset(conn, _params) do
     Ambi.reset_readings()
+
     html(conn, """
       <html>
         <head>
