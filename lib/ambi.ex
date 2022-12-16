@@ -14,7 +14,7 @@ defmodule Ambi do
   alias Phoenix.PubSub
 
   def add_reading(attrs \\ %{}) do
-    %Ambi.Reading{}
+    result = %Ambi.Reading{}
     |> Ambi.Reading.changeset(attrs)
     |> Repo.insert()
 
