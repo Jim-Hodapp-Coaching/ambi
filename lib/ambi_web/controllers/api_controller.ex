@@ -2,10 +2,11 @@ defmodule AmbiWeb.ApiController do
   use AmbiWeb, :controller
 
   def add_reading(conn, params) do
-    status = case Ambi.add_reading(params) do
-      {:ok, _} -> %{code: :ok, desc: "Reading inserted successfully into DB"}
-      {:error, _} -> %{code: :bad_request, desc: "Error inserting params into DB"}
-    end
+    status =
+      case Ambi.add_reading(params) do
+        {:ok, _} -> %{code: :ok, desc: "Reading inserted successfully into DB"}
+        {:error, _} -> %{code: :bad_request, desc: "Error inserting params into DB"}
+      end
 
     conn
     |> put_status(status.code)
