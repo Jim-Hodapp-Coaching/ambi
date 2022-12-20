@@ -14,13 +14,13 @@ defmodule Ambi do
   alias Phoenix.PubSub
 
   def add_reading(attrs \\ %{}) do
-    result = %Ambi.Reading{}
-    |> Ambi.Reading.changeset(attrs)
-    |> Repo.insert()
+    result =
+      %Ambi.Reading{}
+      |> Ambi.Reading.changeset(attrs)
+      |> Repo.insert()
 
-    # broadcast_change(:added)
-    # Logger.debug "Added new reading and called broadcast_change()"
     Logger.debug("Added new reading to the DB")
+    result
   end
 
   # This method looks for a single row in the reading_metadata table and
